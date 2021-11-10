@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <center>
+        <h1>Graph</h1>
+    </center>
+
+    <button onclick="getdata()">Get Data</button>
+
+    <button onclick="myStopFunction()">Stop Parsing</button>
+
+    <form id="tableForm" action="/getJson" method="get">
+        <select class="selectpicker" data-style="btn-info" name="selectpicker">
+            <optgroup label="Select Table">
+                <option name="" value="0">Select table</option>
+                <option id="1" name="Siemens" value="Siemens">Siemens</option>
+                <option id="2" name="ABCTech" value="ABCTech">ABCTech</option>
+                <option id="3" name="AeroTech" value="AeroTech">AeroTech</option>
+                <option id="4" name="Allen Bradley" value="Allen Bradley">Allen Bradley</option>
+                <option id="5" name="Cincinnati" value="Cincinnati">Cincinnati</option>
+                <option id="6" name="Dooson" value="Dooson">Dooson</option>
+                <option id="7"name="Fanuc" value="Fanuc">Fanuc</option>
+                <option id="8" name="HoneyBee" value="HoneyBee">HoneyBee</option>
+                <option id="9" name="Hyundai" value="Hyundai">Hyundai</option>
+                <option id="10" name="Mitsubishi" value="Mitsubishi">Mitsubishi</option>
+                
+            </optgroup>
+        </select>
+        <input type="submit" />
+    </form>
+
+    <script>
+        console.log('hello');
+
+        function getdata() {
+            fetch('/getdata').then(function (response) {
+                response.json().then(function (text) {
+                    console.log(text)
+                });
+            });
+        }
+        getdata()
+        myVar = setInterval(getdata, 5000);
+
+        function myStopFunction() {
+            clearInterval(myVar);
+        }
+
+
+        var express = require('express'),
+            app = express();
+
+        app.use(express.bodyParser());
+
+        // as only one page can use res.sendfile to render the page which will contain the drop   downs
+        app.get('/', function (req, res) {
+            res.sendfile('home.html');
+        });
+
+        app.get('/getJson', function (req, res) {
+            // If it's not showing up, just use req.body to see what is actually being passed.
+            console.log(req.body.selectpicker);
+        });
+
+        app.listen(process.env.PORT);
+
+
+    </script>
+</body>
+
+</html>
